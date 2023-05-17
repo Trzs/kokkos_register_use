@@ -1,6 +1,8 @@
-#include <Kokkos_core.hpp>
+#include <Kokkos_Core.hpp>
 
-#include <kokkos_types.h>
+#define CUDAREAL double
+
+#include "kokkos_types.h"
 #include "kernel_math.h"
 using vec3 = kokkostbx::vector3<CUDAREAL>;
 
