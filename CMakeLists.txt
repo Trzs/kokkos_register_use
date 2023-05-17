@@ -5,7 +5,7 @@ cmake_policy(SET CMP0028 NEW)
 # set the project name
 project(kokkos_register_use)
 
-SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_EXTENSIONS OFF)
 
 include(FetchContent)
