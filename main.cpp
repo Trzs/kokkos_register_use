@@ -12,13 +12,27 @@ int main () {
     {
         CUDAREAL phi = 3.6;
         const auto spindle_vector = vector_cudareal_t("spindle", 4);
-        Kokkos::deep_copy(spindle_vector, [0, 1, 0, 0]);
         const auto a0 = vector_cudareal_t("a0", 4);
-        Kokkos::deep_copy(a0, [0, 1, 2, 3]);
         const auto b0 = vector_cudareal_t("b0", 4);
-        Kokkos::deep_copy(b0, [0, 0, 1, 1]);
         const auto c0 = vector_cudareal_t("c0", 4);
-        Kokkos::deep_copy(c0, [0, 1, 0, -2]);
+        Kokkos::parallel_for("InitA", 1, KOKKOS_LAMBDA(const int idx) {
+            spindle_vector(1) = 1;
+            spindle_vector(2) = 0;
+            spindle_vector(3) = 0;
+
+            a0(1) = 1;
+            a0(2) = 2;
+            a0(3) = 3;
+
+            b0(1) = 1;
+            b0(2) = 0;
+            b0(3) = 1;
+
+            c0(1) = 0;
+            c0(2) = 1;
+            c0(3) = -2;
+        });
+
 
         vec3 spindle_vector_tmp {spindle_vector(1), spindle_vector(2), spindle_vector(3)};
         vec3 a0_tmp {a0(1), a0(2), a0(3)};
