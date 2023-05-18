@@ -7,8 +7,8 @@
 using kokkostbx::vector3;
 
 KOKKOS_INLINE_FUNCTION static CUDAREAL *rotate_axis1(const vector_cudareal_t v, CUDAREAL * newv, const vector_cudareal_t axis, const CUDAREAL sinphi, const CUDAREAL cosphi);
-KOKKOS_INLINE_FUNCTION static vector3<CUDAREAL> rotate_axis2(const vector3<CUDAREAL>& v, vector3<CUDAREAL>& newv, const vector3<CUDAREAL>& axis, const CUDAREAL phi);
-KOKKOS_INLINE_FUNCTION static vector3<CUDAREAL> rotate_axis3(const vector3<CUDAREAL>& v, vector3<CUDAREAL>& newv, const vector3<CUDAREAL>& axis, const CUDAREAL sinphi, const CUDAREAL cosphi);
+// KOKKOS_INLINE_FUNCTION static vector3<CUDAREAL> rotate_axis2(const vector3<CUDAREAL>& v, vector3<CUDAREAL>& newv, const vector3<CUDAREAL>& axis, const CUDAREAL phi);
+// KOKKOS_INLINE_FUNCTION static vector3<CUDAREAL> rotate_axis3(const vector3<CUDAREAL>& v, vector3<CUDAREAL>& newv, const vector3<CUDAREAL>& axis, const CUDAREAL sinphi, const CUDAREAL cosphi);
 
 
 /* rotate a point about a unit vector axis */

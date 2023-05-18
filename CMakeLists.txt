@@ -21,4 +21,4 @@ FetchContent_MakeAvailable(kokkos)
 add_executable(kokkos_register_use main.cpp)
 
 target_link_libraries(kokkos_register_use Kokkos::kokkos)
-target_compile_options(kokkos_register_use PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_options(kokkos_register_use PRIVATE -Wall -Wextra -Wpedantic -lineinfo --resource-usage)
