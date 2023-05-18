@@ -56,12 +56,6 @@ KOKKOS_INLINE_FUNCTION vector3<CUDAREAL> rotate_axis3(const vector3<CUDAREAL>& v
 
         const CUDAREAL sinphi = sin(phi);
         const CUDAREAL cosphi = cos(phi);
-        const CUDAREAL a1 = axis[0];
-        const CUDAREAL a2 = axis[1];
-        const CUDAREAL a3 = axis[2];
-        const CUDAREAL v1 = v[0];
-        const CUDAREAL v2 = v[1];
-        const CUDAREAL v3 = v[2];
         const CUDAREAL dot = axis.dot(v) * (1.0 - cosphi);
 
         newv = axis * dot + v * cosphi + axis.cross(v) * sinphi;
