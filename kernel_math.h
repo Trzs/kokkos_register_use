@@ -46,7 +46,7 @@ KOKKOS_INLINE_FUNCTION vector3<CUDAREAL> rotate_axis2(const vector3<CUDAREAL>& v
 
         newv[0] = a1 * dot + v1 * cosphi + (-a3 * v2 + a2 * v3) * sinphi;
         newv[1] = a2 * dot + v2 * cosphi + (+a3 * v1 - a1 * v3) * sinphi;
-        // newv[2] = a3 * dot + v3 * cosphi + (-a2 * v1 + a1 * v2) * sinphi;
+        newv[2] = a3 * dot + v3 * cosphi + (-a2 * v1 + a1 * v2) * sinphi;
 
         return newv;
 }
