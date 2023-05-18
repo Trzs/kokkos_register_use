@@ -32,8 +32,8 @@ KOKKOS_INLINE_FUNCTION CUDAREAL *rotate_axis1(const vector_cudareal_t v, CUDAREA
 /* rotate a point about a unit vector axis */
 KOKKOS_INLINE_FUNCTION vector3<CUDAREAL> rotate_axis2(const vector3<CUDAREAL>& v, vector3<CUDAREAL>& newv, const vector3<CUDAREAL>& axis, const CUDAREAL phi) {
 
-        // const CUDAREAL sinphi = sin(phi);
-        // const CUDAREAL cosphi = cos(phi);
+        const CUDAREAL sinphi = sin(phi);
+        const CUDAREAL cosphi = cos(phi);
         const CUDAREAL a1 = axis[0];
         const CUDAREAL a2 = axis[1];
         const CUDAREAL a3 = axis[2];
