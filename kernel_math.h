@@ -6,16 +6,14 @@
 
 using kokkostbx::vector3;
 
-KOKKOS_INLINE_FUNCTION static CUDAREAL *rotate_axis1(const vector_cudareal_t v, CUDAREAL * newv, const vector_cudareal_t axis, const CUDAREAL phi);
+KOKKOS_INLINE_FUNCTION static CUDAREAL *rotate_axis1(const vector_cudareal_t v, CUDAREAL * newv, const vector_cudareal_t axis, const CUDAREAL sinphi, const CUDAREAL cosphi);
 KOKKOS_INLINE_FUNCTION static vector3<CUDAREAL> rotate_axis2(const vector3<CUDAREAL>& v, vector3<CUDAREAL>& newv, const vector3<CUDAREAL>& axis, const CUDAREAL phi);
 KOKKOS_INLINE_FUNCTION static vector3<CUDAREAL> rotate_axis3(const vector3<CUDAREAL>& v, vector3<CUDAREAL>& newv, const vector3<CUDAREAL>& axis, const CUDAREAL phi);
 
 
 /* rotate a point about a unit vector axis */
-KOKKOS_INLINE_FUNCTION CUDAREAL *rotate_axis1(const vector_cudareal_t v, CUDAREAL * newv, const vector_cudareal_t axis, const CUDAREAL phi) {
+KOKKOS_INLINE_FUNCTION CUDAREAL *rotate_axis1(const vector_cudareal_t v, CUDAREAL * newv, const vector_cudareal_t axis, const CUDAREAL sinphi, const CUDAREAL cosphi) {
 
-        const CUDAREAL sinphi = sin(phi);
-        const CUDAREAL cosphi = cos(phi);
         const CUDAREAL a1 = axis(1);
         const CUDAREAL a2 = axis(2);
         const CUDAREAL a3 = axis(3);
@@ -52,10 +50,8 @@ KOKKOS_INLINE_FUNCTION vector3<CUDAREAL> rotate_axis2(const vector3<CUDAREAL>& v
 }
 
 /* rotate a point about a unit vector axis */
-KOKKOS_INLINE_FUNCTION vector3<CUDAREAL> rotate_axis3(const vector3<CUDAREAL>& v, vector3<CUDAREAL>& newv, const vector3<CUDAREAL>& axis, const CUDAREAL phi) {
+KOKKOS_INLINE_FUNCTION vector3<CUDAREAL> rotate_axis3(const vector3<CUDAREAL>& v, vector3<CUDAREAL>& newv, const vector3<CUDAREAL>& axis, const CUDAREAL sinphi, const CUDAREAL cosphi) {
 
-        const CUDAREAL sinphi = sin(phi);
-        const CUDAREAL cosphi = cos(phi);
         const CUDAREAL dot = axis.dot(v) * (1.0 - cosphi);
 
         newv = axis * dot + v * cosphi + axis.cross(v) * sinphi;
