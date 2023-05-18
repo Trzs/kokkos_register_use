@@ -39,9 +39,9 @@ void test_kernel1(const vector_cudareal_t& spindle,
         CUDAREAL ap[4];
         CUDAREAL bp[4];
         CUDAREAL cp[4];
-        rotate_axis1(a0, ap, spindle_vector, phi);
-        rotate_axis1(b0, bp, spindle_vector, phi);
-        rotate_axis1(c0, cp, spindle_vector, phi);
+        rotate_axis1(A, ap, spindle, phi);
+        rotate_axis1(B, bp, spindle, phi);
+        rotate_axis1(C, cp, spindle, phi);
     });    
 }
 
@@ -53,9 +53,9 @@ void test_kernel2(const vec3& spindle,
     
     Kokkos::parallel_for("Testkernel2", 1, KOKKOS_LAMBDA(const int idx) {
         vec3 ap_tmp, bp_tmp, cp_tmp;
-        rotate_axis2(a0_tmp, ap_tmp, spindle_vector_tmp, phi);
-        rotate_axis2(b0_tmp, bp_tmp, spindle_vector_tmp, phi);
-        rotate_axis2(c0_tmp, cp_tmp, spindle_vector_tmp, phi);
+        rotate_axis2(A, ap_tmp, spindle, phi);
+        rotate_axis2(B, bp_tmp, spindle, phi);
+        rotate_axis2(C, cp_tmp, spindle, phi);
         CUDAREAL ap[4] = {0.0, ap_tmp[0], ap_tmp[1], ap_tmp[2]};
         CUDAREAL bp[4] = {0.0, bp_tmp[0], bp_tmp[1], bp_tmp[2]};;
         CUDAREAL cp[4] = {0.0, cp_tmp[0], cp_tmp[1], cp_tmp[2]};;
