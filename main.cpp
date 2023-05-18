@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <Kokkos_Core.hpp>
 
 #define CUDAREAL double
@@ -42,6 +43,10 @@ void test_kernel1(const vector_cudareal_t& spindle,
         rotate_axis1(A, ap, spindle, phi);
         rotate_axis1(B, bp, spindle, phi);
         rotate_axis1(C, cp, spindle, phi);
+        std::printf("----- KERNEL 1 -----\n")
+        std::printf("Ap = [%f, %f, %f]\n", ap[1], ap[2], ap[3]);
+        std::printf("Bp = [%f, %f, %f]\n", bp[1], bp[2], bp[3]);
+        std::printf("Cp = [%f, %f, %f]\n", cp[1], cp[2], cp[3]);
     });    
 }
 
@@ -57,8 +62,34 @@ void test_kernel2(const vec3& spindle,
         rotate_axis2(B, bp_tmp, spindle, phi);
         rotate_axis2(C, cp_tmp, spindle, phi);
         CUDAREAL ap[4] = {0.0, ap_tmp[0], ap_tmp[1], ap_tmp[2]};
-        CUDAREAL bp[4] = {0.0, bp_tmp[0], bp_tmp[1], bp_tmp[2]};;
-        CUDAREAL cp[4] = {0.0, cp_tmp[0], cp_tmp[1], cp_tmp[2]};;
+        CUDAREAL bp[4] = {0.0, bp_tmp[0], bp_tmp[1], bp_tmp[2]};
+        CUDAREAL cp[4] = {0.0, cp_tmp[0], cp_tmp[1], cp_tmp[2]};
+        std::printf("----- KERNEL 2 -----\n")
+        std::printf("Ap = [%f, %f, %f]\n", ap[1], ap[2], ap[3]);
+        std::printf("Bp = [%f, %f, %f]\n", bp[1], bp[2], bp[3]);
+        std::printf("Cp = [%f, %f, %f]\n", cp[1], cp[2], cp[3]);
+    });    
+}
+
+void test_kernel3(const vec3& spindle,
+                  const vec3& A, 
+                  const vec3& B, 
+                  const vec3& C,
+                  const CUDAREAL phi) {
+    
+    Kokkos::parallel_for("Testkernel3", 1, KOKKOS_LAMBDA(const int idx) {
+        vec3 ap_tmp, bp_tmp, cp_tmp;
+        rotate_axis3(A, ap_tmp, spindle, phi);
+        rotate_axis3(B, bp_tmp, spindle, phi);
+        rotate_axis3(C, cp_tmp, spindle, phi);
+        CUDAREAL ap[4] = {0.0, ap_tmp[0], ap_tmp[1], ap_tmp[2]};
+        CUDAREAL bp[4] = {0.0, bp_tmp[0], bp_tmp[1], bp_tmp[2]};
+        CUDAREAL cp[4] = {0.0, cp_tmp[0], cp_tmp[1], cp_tmp[2]};
+        std::printf("----- KERNEL 3 -----\n")
+        std::printf("Ap = [%f, %f, %f]\n", ap[1], ap[2], ap[3]);
+        std::printf("Bp = [%f, %f, %f]\n", bp[1], bp[2], bp[3]);
+        std::printf("Cp = [%f, %f, %f]\n", cp[1], cp[2], cp[3]);
+
     });    
 }
 
@@ -80,6 +111,7 @@ int main () {
 
         test_kernel1(spindle_vector, a0, b0, c0, phi);
         test_kernel2(spindle_vector_tmp, a0_tmp, b0_tmp, c0_tmp, phi);
+        test_kernel3(spindle_vector_tmp, a0_tmp, b0_tmp, c0_tmp, phi);
     }
     Kokkos::finalize();
 
