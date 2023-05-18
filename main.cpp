@@ -36,13 +36,15 @@ void test_kernel1(const vector_cudareal_t& spindle,
                   const vector_cudareal_t& C,
                   const CUDAREAL phi) {
     
+    const CUDAREAL sinphi = sin(phi);
+    const CUDAREAL cosphi = cos(phi);
     Kokkos::parallel_for("Testkernel1", 1, KOKKOS_LAMBDA(const int idx) {
         CUDAREAL ap[4];
         CUDAREAL bp[4];
         CUDAREAL cp[4];
-        rotate_axis1(A, ap, spindle, phi);
-        rotate_axis1(B, bp, spindle, phi);
-        rotate_axis1(C, cp, spindle, phi);
+        rotate_axis1(A, ap, spindle, sinphi, cosphi);
+        rotate_axis1(B, bp, spindle, sinphi, cosphi);
+        rotate_axis1(C, cp, spindle, sinphi, cosphi);
         std::printf("----- KERNEL 1 -----\n");
         std::printf("Ap = [%f, %f, %f]\n", ap[1], ap[2], ap[3]);
         std::printf("Bp = [%f, %f, %f]\n", bp[1], bp[2], bp[3]);
@@ -73,12 +75,14 @@ void test_kernel3(const vec3& spindle,
                   const vec3& B, 
                   const vec3& C,
                   const CUDAREAL phi) {
-    
+
+    const CUDAREAL sinphi = sin(phi);
+    const CUDAREAL cosphi = cos(phi);    
     Kokkos::parallel_for("Testkernel3", 1, KOKKOS_LAMBDA(const int idx) {
         vec3 ap_tmp, bp_tmp, cp_tmp;
-        rotate_axis3(A, ap_tmp, spindle, phi);
-        rotate_axis3(B, bp_tmp, spindle, phi);
-        rotate_axis3(C, cp_tmp, spindle, phi);
+        rotate_axis3(A, ap_tmp, spindle, sinphi, cosphi);
+        rotate_axis3(B, bp_tmp, spindle, sinphi, cosphi);
+        rotate_axis3(C, cp_tmp, spindle, sinphi, cosphi);
         const CUDAREAL ap[4] = {0.0, ap_tmp[0], ap_tmp[1], ap_tmp[2]};
         const CUDAREAL bp[4] = {0.0, bp_tmp[0], bp_tmp[1], bp_tmp[2]};
         const CUDAREAL cp[4] = {0.0, cp_tmp[0], cp_tmp[1], cp_tmp[2]};
