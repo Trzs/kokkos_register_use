@@ -6,6 +6,62 @@
 #include "kernel_math.h"
 using vec3 = kokkostbx::vector3<CUDAREAL>;
 
+void init(vector_cudareal_t& spindle,
+          vector_cudareal_t& A, 
+          vector_cudareal_t& B, 
+          vector_cudareal_t& C) {
+    Kokkos::parallel_for("InitA", 1, KOKKOS_LAMBDA(const int idx) {
+        spindle(1) = 1;
+        spindle(2) = 0;
+        spindle(3) = 0;
+
+        A(1) = 1;
+        A(2) = 2;
+        A(3) = 3;
+
+        B(1) = 1;
+        B(2) = 0;
+        B(3) = 1;
+
+        C(1) = 0;
+        C(2) = 1;
+        C(3) = -2;
+    });
+}
+
+void test_kernel1(const vector_cudareal_t& spindle,
+                  const vector_cudareal_t& A, 
+                  const vector_cudareal_t& B, 
+                  const vector_cudareal_t& C,
+                  const CUDAREAL phi) {
+    
+    Kokkos::parallel_for("Testkernel1", 1, KOKKOS_LAMBDA(const int idx) {
+        CUDAREAL ap[4];
+        CUDAREAL bp[4];
+        CUDAREAL cp[4];
+        rotate_axis1(a0, ap, spindle_vector, phi);
+        rotate_axis1(b0, bp, spindle_vector, phi);
+        rotate_axis1(c0, cp, spindle_vector, phi);
+    });    
+}
+
+void test_kernel2(const vec3& spindle,
+                  const vec3& A, 
+                  const vec3& B, 
+                  const vec3& C,
+                  const CUDAREAL phi) {
+    
+    Kokkos::parallel_for("Testkernel2", 1, KOKKOS_LAMBDA(const int idx) {
+        vec3 ap_tmp, bp_tmp, cp_tmp;
+        rotate_axis2(a0_tmp, ap_tmp, spindle_vector_tmp, phi);
+        rotate_axis2(b0_tmp, bp_tmp, spindle_vector_tmp, phi);
+        rotate_axis2(c0_tmp, cp_tmp, spindle_vector_tmp, phi);
+        CUDAREAL ap[4] = {0.0, ap_tmp[0], ap_tmp[1], ap_tmp[2]};
+        CUDAREAL bp[4] = {0.0, bp_tmp[0], bp_tmp[1], bp_tmp[2]};;
+        CUDAREAL cp[4] = {0.0, cp_tmp[0], cp_tmp[1], cp_tmp[2]};;
+    });    
+}
+
 int main () {
 
     Kokkos::initialize();
@@ -15,44 +71,15 @@ int main () {
         const auto a0 = vector_cudareal_t("a0", 4);
         const auto b0 = vector_cudareal_t("b0", 4);
         const auto c0 = vector_cudareal_t("c0", 4);
-        Kokkos::parallel_for("InitA", 1, KOKKOS_LAMBDA(const int idx) {
-            spindle_vector(1) = 1;
-            spindle_vector(2) = 0;
-            spindle_vector(3) = 0;
-
-            a0(1) = 1;
-            a0(2) = 2;
-            a0(3) = 3;
-
-            b0(1) = 1;
-            b0(2) = 0;
-            b0(3) = 1;
-
-            c0(1) = 0;
-            c0(2) = 1;
-            c0(3) = -2;
-        });
-
+        init(spindle_vector, a0, b0, c0);
 
         vec3 spindle_vector_tmp {spindle_vector(1), spindle_vector(2), spindle_vector(3)};
         vec3 a0_tmp {a0(1), a0(2), a0(3)};
         vec3 b0_tmp {b0(1), b0(2), b0(3)};
         vec3 c0_tmp {c0(1), c0(2), c0(3)};
 
-        Kokkos::parallel_for("Testkernel1", 1, KOKKOS_LAMBDA(const int idx) {
-            vec3 ap_tmp, bp_tmp, cp_tmp;// = a0_tmp.rotate_around_axis(spindle_vector_tmp, phi);
-            rotate_axis2(a0_tmp, ap_tmp, spindle_vector_tmp, phi);
-            // rotate_axis(b0_tmp, bp_tmp, spindle_vector_tmp, phi);
-            // rotate_axis(c0_tmp, cp_tmp, spindle_vector_tmp, phi);
-            // vec3 bp_tmp = b0_tmp.rotate_around_axis(spindle_vector_tmp, phi);
-            // vec3 cp_tmp = c0_tmp.rotate_around_axis(spindle_vector_tmp, phi);  
-            CUDAREAL ap[4] = {0.0, ap_tmp[0], ap_tmp[1], ap_tmp[2]};
-            CUDAREAL bp[4];// = {0.0, bp_tmp[0], bp_tmp[1], bp_tmp[2]};;
-            CUDAREAL cp[4];// = {0.0, cp_tmp[0], cp_tmp[1], cp_tmp[2]};;
-            // rotate_axis(a0, ap, spindle_vector, phi);
-            rotate_axis1(b0, bp, spindle_vector, phi);
-            rotate_axis1(c0, cp, spindle_vector, phi);
-        });
+        test_kernel1(spindle_vector, a0, b0, c0, phi);
+        test_kernel2(spindle_vector_tmp, a0_tmp, b0_tmp, c0_tmp, phi);
     }
     Kokkos::finalize();
 
