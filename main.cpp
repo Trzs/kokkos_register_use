@@ -67,10 +67,10 @@ int main () {
     Kokkos::initialize();
     {
         CUDAREAL phi = 3.6;
-        const auto spindle_vector = vector_cudareal_t("spindle", 4);
-        const auto a0 = vector_cudareal_t("a0", 4);
-        const auto b0 = vector_cudareal_t("b0", 4);
-        const auto c0 = vector_cudareal_t("c0", 4);
+        auto spindle_vector = vector_cudareal_t("spindle", 4);
+        auto a0 = vector_cudareal_t("a0", 4);
+        auto b0 = vector_cudareal_t("b0", 4);
+        auto c0 = vector_cudareal_t("c0", 4);
         init(spindle_vector, a0, b0, c0);
 
         vec3 spindle_vector_tmp {spindle_vector(1), spindle_vector(2), spindle_vector(3)};
